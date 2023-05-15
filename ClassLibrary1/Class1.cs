@@ -6,7 +6,7 @@ namespace ClassLibrary1
     {
         public void Run()
         {
-            Console.WriteLine("Run");
+            Console.WriteLine("Run v2");
         }
     }
 }

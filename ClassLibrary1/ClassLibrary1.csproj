@@ -1,7 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<PackageId>Invectec.ClassLibrary1</PackageId>
+		<Title>Invectec.ClassLibrary1</Title>
+		<Version>1.1.0</Version>
+		<Authors>Will Huang</Authors>
+		<Company>Inventec Inc.</Company>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
+
 
 </Project>
