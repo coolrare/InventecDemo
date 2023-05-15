@@ -1,14 +1,12 @@
-﻿@using Microsoft.AspNetCore.Http
-@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
-@inject AppSettings AppSettings
+﻿@inject AppSettings AppSettings
 @{
     ViewData["Title"] = "Home Page";
 }
 
-@if (HttpContextAccessor.HttpContext!.Session.GetString("msg") != null)
+@if (Context.Session.GetString("msg") != null)
 {
     <div style="background-color: yellow">
-        @HttpContextAccessor.HttpContext.Session.GetString("msg")
+        @Context.Session.GetString("msg")
     </div>
 }
 
