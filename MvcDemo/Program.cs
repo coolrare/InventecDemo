@@ -1,4 +1,8 @@
+using MvcDemo.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSingleton<AppSettings>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

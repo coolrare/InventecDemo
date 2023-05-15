@@ -7,14 +7,19 @@ namespace MvcDemo.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly AppSettings appSettings;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,
+            AppSettings appSettings)
         {
             _logger = logger;
+            this.appSettings = appSettings;
         }
 
         public IActionResult Index()
         {
+            ViewBag.SMTPAddress = appSettings.SMTPAddress;
+
             return View();
         }
 
