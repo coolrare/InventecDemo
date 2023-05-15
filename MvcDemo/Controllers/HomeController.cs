@@ -16,9 +16,14 @@ namespace MvcDemo.Controllers
             this.appSettings = appSettings;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string? msg)
         {
             ViewBag.SMTPAddress = appSettings.SMTPAddress;
+
+            if (msg != null)
+            {
+                HttpContext.Session.SetString("msg", msg);
+            }
 
             return View();
         }
