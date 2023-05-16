@@ -71,14 +71,22 @@ namespace EFCoreDemo.Controllers
         // PUT: api/Courses/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCourse(int id, Course course)
+        public async Task<IActionResult> PutCourse(int id, CourseUpdateDto course)
         {
             if (id != course.CourseId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(course).State = EntityState.Modified;
+            var courseToUpdate = await _context.Course.FindAsync(id);
+
+            if (courseToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            courseToUpdate.Title = course.Title;
+            courseToUpdate.Credits = course.Credits;
 
             try
             {
