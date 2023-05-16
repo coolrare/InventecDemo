@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# AMNF0001: Asynchronous method name is not ending with 'Async'
+dotnet_diagnostic.AMNF0001.severity = none
