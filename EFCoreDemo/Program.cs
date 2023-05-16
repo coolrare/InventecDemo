@@ -1,7 +1,19 @@
 using EFCoreDemo.Models;
+using EFCoreDemo.Models.Dto;
 using Microsoft.EntityFrameworkCore;
+using Omu.ValueInjecter;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+Mapper.AddMap<Course, CourseResponseDto>(course =>
+{
+    var courseDto = new CourseResponseDto();
+    courseDto.InjectFrom(course);
+    courseDto.DepartmentName = course.Department.Name;
+    return courseDto;
+});
+
 
 // Add services to the container.
 

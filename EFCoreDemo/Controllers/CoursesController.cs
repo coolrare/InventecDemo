@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EFCoreDemo.Models;
 using EFCoreDemo.Models.Dto;
+using Omu.ValueInjecter;
 
 namespace EFCoreDemo.Controllers
 {
@@ -30,15 +31,11 @@ namespace EFCoreDemo.Controllers
                 return NotFound();
             }
 
-            return await _context.Course.Include(p => p.Department)
-                .Select(course => new CourseResponseDto()
-                {
-                    CourseId = course.CourseId,
-                    Title = course.Title,
-                    Credits = course.Credits,
-                    DepartmentId = course.DepartmentId,
-                    DepartmentName = course.Department.Name
-                }).ToListAsync();
+            var courses = await _context.Course.Include(p => p.Department).ToListAsync();
+
+            var courseDtos = courses.Select(course => Mapper.Map<CourseResponseDto>(course, null));
+
+            return Ok(courseDtos);
         }
 
         // GET: api/Courses/5
@@ -58,14 +55,10 @@ namespace EFCoreDemo.Controllers
                 return NotFound();
             }
 
-            return new CourseResponseDto()
-            {
-                CourseId = course.CourseId,
-                Title = course.Title,
-                Credits = course.Credits,
-                DepartmentId = course.DepartmentId,
-                DepartmentName = course.Department.Name
-            };
+            var courseDto = Mapper.Map<CourseResponseDto>(course);
+            //courseDto.DepartmentName = course.Department.Name;
+
+            return courseDto;
         }
 
         // PUT: api/Courses/5
@@ -85,8 +78,9 @@ namespace EFCoreDemo.Controllers
                 return NotFound();
             }
 
-            courseToUpdate.Title = course.Title;
-            courseToUpdate.Credits = course.Credits;
+            //courseToUpdate.Title = course.Title;
+            //courseToUpdate.Credits = course.Credits;
+            courseToUpdate.InjectFrom(course);
 
             try
             {
@@ -110,16 +104,20 @@ namespace EFCoreDemo.Controllers
         // POST: api/Courses
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Course>> PostCourse(Course course)
+        public async Task<ActionResult<Course>> PostCourse(CourseCreateDto course)
         {
             if (_context.Course == null)
             {
                 return Problem("Entity set 'ContosoUniversityContext.Course'  is null.");
             }
-            _context.Course.Add(course);
+
+            var courseToAdd = Mapper.Map<Course>(course);
+
+            _context.Course.Add(courseToAdd);
+
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCourse", new { id = course.CourseId }, course);
+            return CreatedAtAction("GetCourseById", new { id = courseToAdd.CourseId }, courseToAdd);
         }
 
         // DELETE: api/Courses/5
