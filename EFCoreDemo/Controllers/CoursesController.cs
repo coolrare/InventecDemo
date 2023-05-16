@@ -31,11 +31,10 @@ namespace EFCoreDemo.Controllers
                 return NotFound();
             }
 
-            var courses = await _context.Course.Include(p => p.Department).ToListAsync();
+            var courses = await _context.Course.Include(p => p.Department)
+                .OrderBy(p => p.CourseId).ToListAsync();
 
-            var courseDtos = courses.Select(course => Mapper.Map<CourseResponseDto>(course, null));
-
-            return Ok(courseDtos);
+            return courses.Select(course => Mapper.Map<CourseResponseDto>(course, null)).ToList();
         }
 
         // GET: api/Courses/5
