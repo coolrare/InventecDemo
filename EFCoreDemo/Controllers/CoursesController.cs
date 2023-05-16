@@ -23,13 +23,22 @@ namespace EFCoreDemo.Controllers
 
         // GET: api/Courses
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Course>>> GetCourse()
+        public async Task<ActionResult<IEnumerable<CourseResponseDto>>> GetCourseAll()
         {
             if (_context.Course == null)
             {
                 return NotFound();
             }
-            return await _context.Course.ToListAsync();
+
+            return await _context.Course.Include(p => p.Department)
+                .Select(course => new CourseResponseDto()
+                {
+                    CourseId = course.CourseId,
+                    Title = course.Title,
+                    Credits = course.Credits,
+                    DepartmentId = course.DepartmentId,
+                    DepartmentName = course.Department.Name
+                }).ToListAsync();
         }
 
         // GET: api/Courses/5
