@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EFCoreDemo.Models;
+using EFCoreDemo.Models.Dto;
 
 namespace EFCoreDemo.Controllers
 {
@@ -33,20 +34,29 @@ namespace EFCoreDemo.Controllers
 
         // GET: api/Courses/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Course>> GetCourse(int id)
+        public async Task<ActionResult<CourseResponseDto>> GetCourseById(int id)
         {
             if (_context.Course == null)
             {
                 return NotFound();
             }
-            var course = await _context.Course.FindAsync(id);
+            
+            var course = await _context.Course.Include(p => p.Department)
+                .FirstOrDefaultAsync(p => p.CourseId == id);
 
             if (course == null)
             {
                 return NotFound();
             }
 
-            return course;
+            return new CourseResponseDto()
+            {
+                CourseId = course.CourseId,
+                Title = course.Title,
+                Credits = course.Credits,
+                DepartmentId = course.DepartmentId,
+                DepartmentName = course.Department.Name
+            };
         }
 
         // PUT: api/Courses/5
