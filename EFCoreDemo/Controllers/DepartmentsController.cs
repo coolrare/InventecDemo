@@ -80,7 +80,7 @@ namespace EFCoreDemo.Controllers
                 return NotFound();
             }
 
-            return courses.Select(course => Mapper.Map<CourseResponseDto>(course, null)).ToList();
+            return Mapper.Map<List<CourseResponseDto>>(courses);
         }
 
 

@@ -40,7 +40,7 @@ namespace EFCoreDemo.Controllers
             var courses = await _context.Course.Include(p => p.Department)
                 .OrderBy(p => p.CourseId).ToListAsync();
 
-            return courses.Select(course => Mapper.Map<CourseResponseDto>(course, null)).ToList();
+            return Mapper.Map<List<CourseResponseDto>>(courses);
         }
 
         /// <summary>

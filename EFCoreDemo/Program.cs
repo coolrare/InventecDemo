@@ -17,6 +17,10 @@ Mapper.AddMap<Course, CourseResponseDto>(course =>
     return courseDto;
 });
 
+Mapper.AddMap<List<Course>, List<CourseResponseDto>>(courses =>
+{
+    return courses.Select(course => Mapper.Map<CourseResponseDto>(course, null)).ToList();
+});
 
 // Add services to the container.
 
