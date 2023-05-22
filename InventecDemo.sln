@@ -9,12 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibrary1", "ClassLibra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcDemo", "MvcDemo\MvcDemo.csproj", "{AD25F9FE-DAF5-4DD3-98DB-DB62E5E61482}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCoreDemo", "EFCoreDemo\EFCoreDemo.csproj", "{F7A387E3-DD5D-491B-87DA-8D37F464D2CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCoreDemo", "EFCoreDemo\EFCoreDemo.csproj", "{F7A387E3-DD5D-491B-87DA-8D37F464D2CA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C63C04AB-5788-415C-B92F-201A020D461A}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCoreDemo.Client", "EFCoreDemo.Client\EFCoreDemo.Client.csproj", "{CC2DB0EF-6F84-4109-9215-F0372CF09096}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +40,10 @@ Global
 		{F7A387E3-DD5D-491B-87DA-8D37F464D2CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7A387E3-DD5D-491B-87DA-8D37F464D2CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7A387E3-DD5D-491B-87DA-8D37F464D2CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC2DB0EF-6F84-4109-9215-F0372CF09096}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC2DB0EF-6F84-4109-9215-F0372CF09096}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC2DB0EF-6F84-4109-9215-F0372CF09096}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC2DB0EF-6F84-4109-9215-F0372CF09096}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

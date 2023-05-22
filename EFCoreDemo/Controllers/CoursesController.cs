@@ -23,7 +23,7 @@ namespace EFCoreDemo.Controllers
         }
 
         // GET: api/Courses
-        [HttpGet]
+        [HttpGet(Name = nameof(GetCourseAll))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
@@ -41,7 +41,7 @@ namespace EFCoreDemo.Controllers
         }
 
         // GET: api/Courses/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = nameof(GetCourseById))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
@@ -68,7 +68,7 @@ namespace EFCoreDemo.Controllers
 
         // PUT: api/Courses/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("{id}", Name = "UpdateCourse")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -116,8 +116,8 @@ namespace EFCoreDemo.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesDefaultResponseType]
-        [HttpPost]
-        public async Task<ActionResult<Course>> PostCourse(CourseCreateDto course)
+        [HttpPost(Name = "CreateCourse")]
+        public async Task<ActionResult<CourseCreateResponseDto>> PostCourse(CourseCreateDto course)
         {
             if (_context.Course == null)
             {
@@ -130,11 +130,13 @@ namespace EFCoreDemo.Controllers
 
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCourseById", new { id = courseToAdd.CourseId }, courseToAdd);
+            var courseDto = Mapper.Map<CourseCreateResponseDto>(courseToAdd);
+
+            return CreatedAtAction("GetCourseById", new { id = courseDto.CourseId }, courseDto);
         }
 
         // DELETE: api/Courses/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}", Name = "DeleteCourse")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
