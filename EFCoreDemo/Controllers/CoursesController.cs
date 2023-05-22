@@ -48,7 +48,7 @@ namespace EFCoreDemo.Controllers
         /// </summary>
         /// <param name="id">The course id.</param>
         /// <returns>The course.</returns>
-        [HttpGet("{id}", Name = nameof(GetCourseById))]
+        [HttpGet("{id:int}", Name = nameof(GetCourseById))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
