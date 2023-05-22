@@ -41,6 +41,9 @@ public partial class ContosoUniversityContext : DbContext
             entity.Property(e => e.DepartmentId)
                 .HasDefaultValueSql("((1))")
                 .HasColumnName("DepartmentID");
+            entity.Property(e => e.ModifiedOn)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
             entity.Property(e => e.Title).HasMaxLength(50);
 
             entity.HasOne(d => d.Department).WithMany(p => p.Course)

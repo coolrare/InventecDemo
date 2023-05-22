@@ -15,6 +15,8 @@ public partial class Course
 
     public int DepartmentId { get; set; }
 
+    public DateTime ModifiedOn { get; set; }
+
     public virtual Department Department { get; set; }
 
     public virtual ICollection<Enrollment> Enrollment { get; set; } = new List<Enrollment>();
