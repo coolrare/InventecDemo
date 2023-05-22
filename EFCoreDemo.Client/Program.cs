@@ -59,11 +59,12 @@ catch (EFCoreDemo.Client.ApiException<EFCoreDemo.Client.ProblemDetails> ex)
             JObject val = (JObject)value; // { "Credits": [ "課程評價必須介於 1 到 5 之間" ]}
             foreach (var (fieldName, errors) in val)
             {
-                JArray errMsgs = (JArray)errors;
-
-                foreach (var errMsg in errMsgs)
+                if (errors is JArray errMsgs)
                 {
-                    Console.WriteLine($"- {fieldName}\t{errMsg}");
+                    foreach (var errMsg in errMsgs)
+                    {
+                        Console.WriteLine($"- {fieldName}\t{errMsg}");
+                    }
                 }
             }
         }
