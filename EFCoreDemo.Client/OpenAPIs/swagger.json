@@ -452,16 +452,20 @@
   "components": {
     "schemas": {
       "CourseCreateDto": {
+        "required": [
+          "title"
+        ],
         "type": "object",
         "properties": {
           "title": {
-            "type": "string",
-            "nullable": true
+            "minLength": 3,
+            "type": "string"
           },
           "credits": {
+            "maximum": 5,
+            "minimum": 1,
             "type": "integer",
-            "format": "int32",
-            "readOnly": true
+            "format": "int32"
           },
           "departmentId": {
             "type": "integer",
