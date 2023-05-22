@@ -32,7 +32,7 @@ Console.WriteLine();
 Console.WriteLine("建立資料：");
 Console.WriteLine();
 
-var newCourse = new CourseCreateDto
+var newCourse = new CourseCreateRequestDto
 {
     Title = "New Course",
     Credits = 6,

@@ -103,17 +103,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CourseCreateDto"
+                "$ref": "#/components/schemas/CourseCreateRequestDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CourseCreateDto"
+                "$ref": "#/components/schemas/CourseCreateRequestDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CourseCreateDto"
+                "$ref": "#/components/schemas/CourseCreateRequestDto"
               }
             }
           }
@@ -264,17 +264,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CourseUpdateDto"
+                "$ref": "#/components/schemas/CourseUpdateResquestDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CourseUpdateDto"
+                "$ref": "#/components/schemas/CourseUpdateResquestDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CourseUpdateDto"
+                "$ref": "#/components/schemas/CourseUpdateResquestDto"
               }
             }
           }
@@ -451,7 +451,7 @@
   },
   "components": {
     "schemas": {
-      "CourseCreateDto": {
+      "CourseCreateRequestDto": {
         "required": [
           "title"
         ],
@@ -526,7 +526,7 @@
         },
         "additionalProperties": false
       },
-      "CourseUpdateDto": {
+      "CourseUpdateResquestDto": {
         "type": "object",
         "properties": {
           "courseId": {
