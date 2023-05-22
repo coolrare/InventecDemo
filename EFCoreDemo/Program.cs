@@ -1,8 +1,10 @@
 using EFCoreDemo.Models;
 using EFCoreDemo.Models.Dto;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Omu.ValueInjecter;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +42,9 @@ builder.Services.AddSwaggerGen(c =>
         },
         TermsOfService = new Uri("https://www.example.com")
     });
+
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
 builder.Services.AddDbContext<ContosoUniversityContext>(

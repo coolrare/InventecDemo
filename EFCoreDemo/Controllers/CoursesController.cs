@@ -22,7 +22,10 @@ namespace EFCoreDemo.Controllers
             _context = context;
         }
 
-        // GET: api/Courses
+        /// <summary>
+        /// Gets all courses.
+        /// </summary>
+        /// <returns>The courses.</returns>
         [HttpGet(Name = nameof(GetCourseAll))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -40,7 +43,11 @@ namespace EFCoreDemo.Controllers
             return courses.Select(course => Mapper.Map<CourseResponseDto>(course, null)).ToList();
         }
 
-        // GET: api/Courses/5
+        /// <summary>
+        /// Gets course by id.
+        /// </summary>
+        /// <param name="id">The course id.</param>
+        /// <returns>The course.</returns>
         [HttpGet("{id}", Name = nameof(GetCourseById))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -51,7 +58,7 @@ namespace EFCoreDemo.Controllers
             {
                 return NotFound();
             }
-            
+
             var course = await _context.Course.Include(p => p.Department)
                 .FirstOrDefaultAsync(p => p.CourseId == id);
 
@@ -66,8 +73,12 @@ namespace EFCoreDemo.Controllers
             return courseDto;
         }
 
-        // PUT: api/Courses/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Updates the specified course.
+        /// </summary>
+        /// <param name="id">The course id.</param>
+        /// <param name="course">The course information to update.</param>
+        /// <returns>The updated course.</returns>
         [HttpPut("{id}", Name = "UpdateCourse")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

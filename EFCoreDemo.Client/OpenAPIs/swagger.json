@@ -21,6 +21,7 @@
         "tags": [
           "Courses"
         ],
+        "summary": "Gets all courses.",
         "operationId": "GetCourseAll",
         "responses": {
           "200": {
@@ -167,11 +168,13 @@
         "tags": [
           "Courses"
         ],
+        "summary": "Gets course by id.",
         "operationId": "GetCourseById",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "The course id.",
             "required": true,
             "style": "simple",
             "schema": {
@@ -247,11 +250,13 @@
         "tags": [
           "Courses"
         ],
+        "summary": "Updates the specified course.",
         "operationId": "UpdateCourse",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "The course id.",
             "required": true,
             "style": "simple",
             "schema": {
@@ -261,6 +266,7 @@
           }
         ],
         "requestBody": {
+          "description": "The course information to update.",
           "content": {
             "application/json": {
               "schema": {
