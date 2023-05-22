@@ -1,4 +1,4 @@
-﻿namespace EFCoreDemo.Controllers
+﻿namespace EFCoreDemo.Models.Dto
 {
     public class CourseCreateResponseDto
     {

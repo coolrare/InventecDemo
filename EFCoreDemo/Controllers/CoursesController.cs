@@ -73,7 +73,7 @@ namespace EFCoreDemo.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> PutCourse(int id, CourseUpdateDto course)
+        public async Task<IActionResult> PutCourse(int id, CourseUpdateResquestDto course)
         {
             if (id != course.CourseId)
             {
@@ -117,7 +117,7 @@ namespace EFCoreDemo.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesDefaultResponseType]
         [HttpPost(Name = "CreateCourse")]
-        public async Task<ActionResult<CourseCreateResponseDto>> PostCourse(CourseCreateDto course)
+        public async Task<ActionResult<CourseCreateResponseDto>> PostCourse(CourseCreateRequestDto course)
         {
             if (_context.Course == null)
             {

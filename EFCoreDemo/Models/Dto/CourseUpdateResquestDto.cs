@@ -1,6 +1,6 @@
 ﻿namespace EFCoreDemo.Models.Dto
 {
-    public class CourseUpdateDto
+    public class CourseUpdateResquestDto
     {
         public int CourseId { get; set; }
 

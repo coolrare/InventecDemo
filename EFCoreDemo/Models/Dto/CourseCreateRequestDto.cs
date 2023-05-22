@@ -2,7 +2,7 @@
 
 namespace EFCoreDemo.Models.Dto
 {
-    public class CourseCreateDto : IValidatableObject
+    public class CourseCreateRequestDto : IValidatableObject
     {
         [Required(ErrorMessage = "請務必填寫課程標題")]
         [MinLength(3, ErrorMessage = "課程標題至少需要 3 個字元以上")]
