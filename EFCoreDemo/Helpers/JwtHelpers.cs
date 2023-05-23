@@ -2,20 +2,25 @@
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Options;
+using EFCoreDemo.Models;
 
 public class JwtHelpers
 {
     private readonly IConfiguration Configuration;
+    private readonly JwtSettings jwtSettings;
 
-    public JwtHelpers(IConfiguration configuration)
+    public JwtHelpers(IConfiguration configuration, 
+        IOptions<JwtSettings> jwtSettings)
     {
         this.Configuration = configuration;
+        this.jwtSettings = jwtSettings.Value;
     }
 
     public string GenerateToken(string userName, int expireMinutes = 30)
     {
-        var issuer = Configuration.GetValue<string>("JwtSettings:Issuer");
-        var signKey = Configuration.GetValue<string>("JwtSettings:SignKey")!;
+        var issuer = jwtSettings.Issuer;
+        var signKey = jwtSettings.SignKey!;
 
         // Configuring "Claims" to your JWT Token
         var claims = new List<Claim>();
