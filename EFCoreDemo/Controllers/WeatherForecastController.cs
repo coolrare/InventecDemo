@@ -29,5 +29,16 @@ namespace EFCoreDemo.Controllers
             })
             .ToArray();
         }
+
+        [HttpGet]
+        [Route("~/test", Name = "GetWeatherForecastTest")]
+        public IActionResult GetTest()
+        {
+            return Ok(new
+            {
+                Name = User.Identity?.Name,
+                IsAuthenticated = User.Identity?.IsAuthenticated
+            });
+        }
     }
 }
