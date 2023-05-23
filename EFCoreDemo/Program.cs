@@ -24,6 +24,8 @@ Mapper.AddMap<List<Course>, List<CourseResponseDto>>(courses =>
 
 // Add services to the container.
 
+builder.Services.AddSingleton<JwtHelpers>();
+
 builder.Services.AddCors(builder =>
 {
     /*
