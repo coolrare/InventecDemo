@@ -1,4 +1,5 @@
 ﻿using EFCoreDemo.Models.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,7 @@ namespace EFCoreDemo.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
+        [AllowAnonymous]
         public IActionResult Login(LoginDto login)
         {
             if (!ValidateLogin(login))
