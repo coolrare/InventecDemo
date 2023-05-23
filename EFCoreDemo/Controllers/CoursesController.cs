@@ -38,9 +38,14 @@ namespace EFCoreDemo.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<CourseResponseDto>>> GetCourseAll()
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return Forbid();
+            }
+
             if (_context.Course == null)
             {
                 return NotFound();
