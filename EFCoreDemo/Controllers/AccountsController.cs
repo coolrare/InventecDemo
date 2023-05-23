@@ -16,6 +16,9 @@ namespace EFCoreDemo.Controllers
         }
 
         [HttpPost("~/login", Name = nameof(Login))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
         public IActionResult Login(LoginDto login)
         {
             if (!ValidateLogin(login))
