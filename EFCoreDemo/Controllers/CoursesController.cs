@@ -143,7 +143,7 @@ namespace EFCoreDemo.Controllers
 
             var courseDto = Mapper.Map<CourseCreateResponseDto>(courseToAdd);
 
-            return CreatedAtAction("GetCourseById", new { id = courseDto.CourseId }, courseDto);
+            return CreatedAtAction(nameof(GetCourseById), new { id = courseDto.CourseId }, courseDto);
         }
 
         // DELETE: api/Courses/5
