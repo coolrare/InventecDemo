@@ -26,6 +26,13 @@ Mapper.AddMap<List<Course>, List<CourseResponseDto>>(courses =>
 
 builder.Services.AddCors(builder =>
 {
+    /*
+         fetch('https://localhost:5001/api/courses')
+            .then(response => response.json())
+            .then(jsonData => {
+                console.log(jsonData);
+            })
+     */
     builder.AddDefaultPolicy(policy =>
     {
         policy.WithOrigins("https://blog.miniasp.com")
