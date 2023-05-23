@@ -11,6 +11,12 @@ using Omu.ValueInjecter;
 
 namespace EFCoreDemo.Controllers
 {
+    public class QueryCourseParams
+    {
+        public string Title { get; set; }
+        public int Credit { get; set; }
+    }
+
     [Route("api/[controller]")]
     [ApiController]
     public class CoursesController : ControllerBase
@@ -38,6 +44,26 @@ namespace EFCoreDemo.Controllers
             }
 
             var courses = await _context.Course.Include(p => p.Department)
+                .OrderBy(p => p.CourseId).ToListAsync();
+
+            return Mapper.Map<List<CourseResponseDto>>(courses);
+        }
+
+        // /api/Courses/Query?title=Git&credit=3
+        [HttpGet("Query", Name = nameof(QueryCourseAll))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<IEnumerable<CourseResponseDto>>> QueryCourseAll(
+            [FromQuery]QueryCourseParams param)
+        {
+            if (_context.Course == null)
+            {
+                return NotFound();
+            }
+
+            var courses = await _context.Course.Include(p => p.Department)
+                .Where(p => p.Title.Contains(param.Title) && p.Credits == param.Credit)
                 .OrderBy(p => p.CourseId).ToListAsync();
 
             return Mapper.Map<List<CourseResponseDto>>(courses);
