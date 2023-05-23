@@ -67,11 +67,14 @@ namespace EFCoreDemo.Controllers
             {
                 courses = courses.Where(p => p.Title.Contains(param.Title));
             }
+            if (param.Credit <= 0)
+            {
+                throw new ArgumentException("credit 參數範圍錯誤，不得小於 0", "credit");
+            }
             if (param.Credit != 0)
             {
                 courses = courses.Where(p => p.Credits == param.Credit);
             }
-
             var coursesResult = await courses.OrderBy(p => p.CourseId).ToListAsync();
 
             return Mapper.Map<List<CourseResponseDto>>(coursesResult);
