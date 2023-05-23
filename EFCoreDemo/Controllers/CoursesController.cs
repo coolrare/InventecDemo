@@ -13,7 +13,7 @@ namespace EFCoreDemo.Controllers
 {
     public class QueryCourseParams
     {
-        public string Title { get; set; }
+        public string? Title { get; set; }
         public int Credit { get; set; }
     }
 
@@ -62,11 +62,19 @@ namespace EFCoreDemo.Controllers
                 return NotFound();
             }
 
-            var courses = await _context.Course.Include(p => p.Department)
-                .Where(p => p.Title.Contains(param.Title) && p.Credits == param.Credit)
-                .OrderBy(p => p.CourseId).ToListAsync();
+            var courses = _context.Course.Include(p => p.Department).AsQueryable();
+            if (param.Title != null)
+            {
+                courses = courses.Where(p => p.Title.Contains(param.Title));
+            }
+            if (param.Credit != 0)
+            {
+                courses = courses.Where(p => p.Credits == param.Credit);
+            }
 
-            return Mapper.Map<List<CourseResponseDto>>(courses);
+            var coursesResult = await courses.OrderBy(p => p.CourseId).ToListAsync();
+
+            return Mapper.Map<List<CourseResponseDto>>(coursesResult);
         }
 
         /// <summary>
