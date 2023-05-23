@@ -27,6 +27,9 @@ Mapper.AddMap<List<Course>, List<CourseResponseDto>>(courses =>
 
 // Add services to the container.
 
+builder.Services.Configure<JwtSettings>(
+    builder.Configuration.GetSection("JwtSettings"));
+
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

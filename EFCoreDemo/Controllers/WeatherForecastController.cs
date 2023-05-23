@@ -1,4 +1,7 @@
+using EFCoreDemo.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace EFCoreDemo.Controllers
 {
@@ -8,14 +11,17 @@ namespace EFCoreDemo.Controllers
     {
         private static readonly string[] Summaries = new[]
         {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+        };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IOptions<JwtSettings> jwtSettings;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger,
+            IOptions<JwtSettings> jwtSettings)
         {
             _logger = logger;
+            this.jwtSettings = jwtSettings;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
@@ -39,6 +45,13 @@ namespace EFCoreDemo.Controllers
                 Name = User.Identity?.Name,
                 IsAuthenticated = User.Identity?.IsAuthenticated
             });
+        }
+
+        [HttpGet("~/jwt")]
+        [AllowAnonymous]
+        public IActionResult GetJwtSettings()
+        {
+            return Ok(jwtSettings.Value);
         }
     }
 }
