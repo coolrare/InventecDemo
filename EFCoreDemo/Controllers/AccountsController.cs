@@ -16,6 +16,16 @@ namespace EFCoreDemo.Controllers
             this.jwt = jwt;
         }
 
+        [HttpGet("~/claims", Name = nameof(Claims))]
+        public IActionResult Claims()
+        {
+            return Ok(User.Claims.Select(p => new
+            {
+                p.Type,
+                p.Value
+            }));
+        }
+
         [HttpPost("~/login", Name = nameof(Login))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

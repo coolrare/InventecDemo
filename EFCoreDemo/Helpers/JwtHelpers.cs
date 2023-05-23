@@ -43,6 +43,8 @@ public class JwtHelpers
 
         claims.Add(new Claim(ClaimTypes.Role, "Users"));
 
+        claims.Add(new Claim("StaffId", "9527"));
+
         var userClaimsIdentity = new ClaimsIdentity(claims);
 
         // Create a SymmetricSecurityKey for JWT Token signatures
