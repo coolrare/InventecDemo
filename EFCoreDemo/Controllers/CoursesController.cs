@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using EFCoreDemo.Models;
 using EFCoreDemo.Models.Dto;
 using Omu.ValueInjecter;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EFCoreDemo.Controllers
 {
@@ -19,6 +20,7 @@ namespace EFCoreDemo.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Users")]
     public class CoursesController : ControllerBase
     {
         private readonly ContosoUniversityContext _context;
@@ -36,6 +38,7 @@ namespace EFCoreDemo.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<CourseResponseDto>>> GetCourseAll()
         {
             if (_context.Course == null)

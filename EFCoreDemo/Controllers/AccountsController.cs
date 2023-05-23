@@ -38,7 +38,7 @@ namespace EFCoreDemo.Controllers
 
         private bool ValidateLogin(LoginDto login)
         {
-            return login.Username == "will";
+            return login.Password == "1qaz@WSX";
         }
     }
 }
