@@ -5,13 +5,14 @@ using System.Net;
 
 namespace EFCoreDemo.Controllers
 {
+    [Route("/error")]
     [ApiController]
     public class ErrorController : ControllerBase
     {
         //[Route("/error")]
         //public IActionResult Error() => Problem();
 
-        [Route("/error")]
+        [HttpGet, HttpPost, HttpPut, HttpDelete, HttpHead, HttpPatch, HttpOptions]
         public ActionResult Error([FromServices] IWebHostEnvironment webHostEnvironment)
         {
             var feature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
