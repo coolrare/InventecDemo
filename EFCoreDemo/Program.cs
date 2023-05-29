@@ -14,12 +14,12 @@ using Serilog.Events;
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
     .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+    .MinimumLevel.Override("EFCoreDemo.Controllers", LogEventLevel.Verbose)
     .Enrich.FromLogContext()
     .WriteTo.Console()
     .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
     .WriteTo.Seq(serverUrl: "http://localhost:5341", apiKey: "o1uLOtqp6Hu0R0bPjBje")
     .CreateLogger();
-
 
 try
 {
@@ -137,7 +137,10 @@ try
 
     var app = builder.Build();
 
-    app.UseExceptionHandler("/error");
+    if (app.Environment.IsProduction())
+    {
+        app.UseExceptionHandler("/error");
+    }
 
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
@@ -146,7 +149,7 @@ try
         app.UseSwaggerUI();
     }
 
-    app.UseHttpsRedirection();
+    //app.UseHttpsRedirection();
 
     app.UseCors();
 

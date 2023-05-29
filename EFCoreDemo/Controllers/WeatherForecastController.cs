@@ -15,14 +15,17 @@ namespace EFCoreDemo.Controllers
         };
 
         private readonly ILogger _customLogger;
+        private readonly IWebHostEnvironment env;
         private readonly ILogger<WeatherForecastController> _logger;
         private readonly IOptions<JwtSettings> jwtSettings;
 
         public WeatherForecastController(
+            IWebHostEnvironment env,
             ILogger<WeatherForecastController> logger,
             ILoggerFactory loggerFactory,
             IOptions<JwtSettings> jwtSettings)
         {
+            this.env = env;
             _logger = logger;
             _customLogger = loggerFactory.CreateLogger("CustomLogger.v1");
             this.jwtSettings = jwtSettings;
@@ -55,8 +58,12 @@ namespace EFCoreDemo.Controllers
         [AllowAnonymous]
         public IActionResult GetJwtSettings()
         {
-            _logger.LogTrace("GetJwtSettings");
-            _logger.LogDebug("GetJwtSettings");
+            if (env.IsEnvironment("UAT"))
+            {
+                _logger.LogTrace("GetJwtSettings on UAT");
+                _logger.LogDebug("GetJwtSettings on UAT");
+            }
+
             _logger.LogInformation(
                 "GetJwtSettings jwtSettings.Value.Issuer={Issuer} " +
                 "jwtSettings.Value.SignKey={SignKey}",
