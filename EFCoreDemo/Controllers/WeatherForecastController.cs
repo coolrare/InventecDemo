@@ -17,7 +17,8 @@ namespace EFCoreDemo.Controllers
         private readonly ILogger<WeatherForecastController> _logger;
         private readonly IOptions<JwtSettings> jwtSettings;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger,
+        public WeatherForecastController(
+            ILogger<WeatherForecastController> logger,
             IOptions<JwtSettings> jwtSettings)
         {
             _logger = logger;
@@ -51,6 +52,13 @@ namespace EFCoreDemo.Controllers
         [AllowAnonymous]
         public IActionResult GetJwtSettings()
         {
+            _logger.LogTrace("GetJwtSettings");
+            _logger.LogDebug("GetJwtSettings");
+            _logger.LogInformation("GetJwtSettings");
+            _logger.LogWarning("GetJwtSettings");
+            _logger.LogError("GetJwtSettings");
+            _logger.LogCritical("GetJwtSettings");
+
             return Ok(jwtSettings.Value);
         }
     }

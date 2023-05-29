@@ -11,6 +11,8 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//builder.Logging.ClearProviders();
+//builder.Logging.AddJsonConsole();
 
 Mapper.AddMap<Course, CourseResponseDto>(course =>
 {
