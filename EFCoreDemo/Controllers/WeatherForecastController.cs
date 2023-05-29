@@ -57,7 +57,11 @@ namespace EFCoreDemo.Controllers
         {
             _logger.LogTrace("GetJwtSettings");
             _logger.LogDebug("GetJwtSettings");
-            _logger.LogInformation("GetJwtSettings");
+            _logger.LogInformation(
+                "GetJwtSettings jwtSettings.Value.Issuer={Issuer} " +
+                "jwtSettings.Value.SignKey={SignKey}",
+                jwtSettings.Value.Issuer,
+                jwtSettings.Value.SignKey);
             _logger.LogWarning("GetJwtSettings");
             _logger.LogError("GetJwtSettings");
             _logger.LogCritical("GetJwtSettings");
