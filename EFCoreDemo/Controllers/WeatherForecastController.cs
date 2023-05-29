@@ -73,9 +73,14 @@ namespace EFCoreDemo.Controllers
 
         [HttpGet("~/rid")]
         [AllowAnonymous]
-        public IActionResult GetRequestId()
+        public IActionResult GetRequestId(int err = 0)
         {
-            _logger.LogInformation("GetRequestId");
+            _logger.LogInformation(new EventId(999), "GetRequestId");
+
+            if (err == 1)
+            {
+                _logger.LogError(new ArgumentException("BAD"), "GetRequestId");
+            }
 
             return Ok(HttpContext.TraceIdentifier);
         }
