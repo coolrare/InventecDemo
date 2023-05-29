@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  efcoredemo:
+    image: ${DOCKER_REGISTRY-}efcoredemo
+    build:
+      context: .
+      dockerfile: EFCoreDemo/Dockerfile
+  seq:
+    image: datalust/seq:latest
+    ports:
+      - "5341:80"
+    environment:
+      - ACCEPT_EULA=Y
+    volumes:
+      - seq-data:/data
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong!Passw0rd

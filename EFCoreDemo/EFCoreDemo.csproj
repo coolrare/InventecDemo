@@ -10,6 +10,7 @@
 	<UserSecretsId>3cfbacc6-1599-457d-b528-e4e67c00f89b</UserSecretsId>
     <IsTransformWebConfigDisabled>false</IsTransformWebConfigDisabled>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
