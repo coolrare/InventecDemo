@@ -8,132 +8,162 @@ using Microsoft.OpenApi.Models;
 using Omu.ValueInjecter;
 using System.Reflection;
 using System.Text;
+using Serilog;
+using Serilog.Events;
 
-var builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
-builder.Logging.ClearProviders();
-builder.Logging.AddJsonConsole();
 
-Mapper.AddMap<Course, CourseResponseDto>(course =>
+try
 {
-    var courseDto = new CourseResponseDto();
-    courseDto.InjectFrom(course);
-    courseDto.DepartmentName = course.Department.Name;
-    return courseDto;
-});
+    Log.Information("Starting web host");
 
-Mapper.AddMap<List<Course>, List<CourseResponseDto>>(courses =>
-{
-    return courses.Select(course => Mapper.Map<CourseResponseDto>(course, null)).ToList();
-});
+    var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+    builder.Logging.ClearProviders();
+    builder.Logging.AddJsonConsole();
 
-builder.Services.Configure<JwtSettings>(
-    builder.Configuration.GetSection("JwtSettings"));
-
-builder.Services
-    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+    Mapper.AddMap<Course, CourseResponseDto>(course =>
     {
-        // 當驗證失敗時，回應標頭會包含 WWW-Authenticate 標頭，這裡會顯示失敗的詳細錯誤原因
-        options.IncludeErrorDetails = true; // 預設值為 true，有時會特別關閉
-
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            // 透過這項宣告，就可以從 "sub" 取值並設定給 User.Identity.Name
-            NameClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier",
-            // 透過這項宣告，就可以從 "roles" 取值，並可讓 [Authorize] 判斷角色
-            RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
-
-            // 一般我們都會驗證 Issuer
-            ValidateIssuer = true,
-            ValidIssuer = builder.Configuration.GetValue<string>("JwtSettings:Issuer"),
-
-            // 通常不太需要驗證 Audience
-            ValidateAudience = false,
-            //ValidAudience = "JwtAuthDemo", // 不驗證就不需要填寫
-
-            // 一般我們都會驗證 Token 的有效期間
-            ValidateLifetime = true,
-
-            // 如果 Token 中包含 key 才需要驗證，一般都只有簽章而已
-            ValidateIssuerSigningKey = false,
-
-            // "1234567890123456" 應該從 IConfiguration 取得
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JwtSettings:SignKey")!))
-        };
+        var courseDto = new CourseResponseDto();
+        courseDto.InjectFrom(course);
+        courseDto.DepartmentName = course.Department.Name;
+        return courseDto;
     });
 
-builder.Services.AddAuthorization();
-
-builder.Services.AddSingleton<JwtHelpers>();
-
-builder.Services.AddCors(builder =>
-{
-    /*
-         fetch('https://localhost:5001/api/courses')
-            .then(response => response.json())
-            .then(jsonData => {
-                console.log(jsonData);
-            })
-     */
-    builder.AddDefaultPolicy(policy =>
+    Mapper.AddMap<List<Course>, List<CourseResponseDto>>(courses =>
     {
-        policy.WithOrigins("https://blog.miniasp.com")
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-    });
-});
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo {
-        Title = "Inventec EFCoreDemo API Server", 
-        Version = "v1",
-        Contact = new OpenApiContact()
-        {
-            Name = "Will",
-            Email = "will@example.com",
-            Url = new Uri("https://www.example.com")
-        },
-        Description = "Inventec EFCoreDemo API Server",
-        License = new OpenApiLicense()
-        {
-            Name = "MIT",
-            Url = new Uri("https://opensource.org/licenses/MIT")
-        },
-        TermsOfService = new Uri("https://www.example.com")
+        return courses.Select(course => Mapper.Map<CourseResponseDto>(course, null)).ToList();
     });
 
-    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-});
+    // Add services to the container.
 
-builder.Services.AddDbContext<ContosoUniversityContext>(
-    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    builder.Services.Configure<JwtSettings>(
+        builder.Configuration.GetSection("JwtSettings"));
 
-var app = builder.Build();
+    builder.Services
+        .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+            // 當驗證失敗時，回應標頭會包含 WWW-Authenticate 標頭，這裡會顯示失敗的詳細錯誤原因
+            options.IncludeErrorDetails = true; // 預設值為 true，有時會特別關閉
 
-app.UseExceptionHandler("/error");
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                // 透過這項宣告，就可以從 "sub" 取值並設定給 User.Identity.Name
+                NameClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier",
+                // 透過這項宣告，就可以從 "roles" 取值，並可讓 [Authorize] 判斷角色
+                RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+                // 一般我們都會驗證 Issuer
+                ValidateIssuer = true,
+                ValidIssuer = builder.Configuration.GetValue<string>("JwtSettings:Issuer"),
+
+                // 通常不太需要驗證 Audience
+                ValidateAudience = false,
+                //ValidAudience = "JwtAuthDemo", // 不驗證就不需要填寫
+
+                // 一般我們都會驗證 Token 的有效期間
+                ValidateLifetime = true,
+
+                // 如果 Token 中包含 key 才需要驗證，一般都只有簽章而已
+                ValidateIssuerSigningKey = false,
+
+                // "1234567890123456" 應該從 IConfiguration 取得
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JwtSettings:SignKey")!))
+            };
+        });
+
+    builder.Services.AddAuthorization();
+
+    builder.Services.AddSingleton<JwtHelpers>();
+
+    builder.Services.AddCors(builder =>
+    {
+        /*
+             fetch('https://localhost:5001/api/courses')
+                .then(response => response.json())
+                .then(jsonData => {
+                    console.log(jsonData);
+                })
+         */
+        builder.AddDefaultPolicy(policy =>
+        {
+            policy.WithOrigins("https://blog.miniasp.com")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+    });
+
+    builder.Services.AddControllers();
+    // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Title = "Inventec EFCoreDemo API Server",
+            Version = "v1",
+            Contact = new OpenApiContact()
+            {
+                Name = "Will",
+                Email = "will@example.com",
+                Url = new Uri("https://www.example.com")
+            },
+            Description = "Inventec EFCoreDemo API Server",
+            License = new OpenApiLicense()
+            {
+                Name = "MIT",
+                Url = new Uri("https://opensource.org/licenses/MIT")
+            },
+            TermsOfService = new Uri("https://www.example.com")
+        });
+
+        var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+    });
+
+    builder.Services.AddDbContext<ContosoUniversityContext>(
+        options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+    builder.Host.UseSerilog();
+
+    var app = builder.Build();
+
+    app.UseExceptionHandler("/error");
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseHttpsRedirection();
+
+    app.UseCors();
+
+    app.UseAuthentication();
+    app.UseAuthorization();
+
+    app.MapControllers().RequireAuthorization();
+
+    app.Run();
+
+    return 0;
 }
-
-app.UseHttpsRedirection();
-
-app.UseCors();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers().RequireAuthorization();
-
-app.Run();
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Host terminated unexpectedly");
+    return 1;
+}
+finally
+{
+    Log.CloseAndFlush();
+}
