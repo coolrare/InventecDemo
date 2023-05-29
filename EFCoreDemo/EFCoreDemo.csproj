@@ -9,6 +9,7 @@
 	<NoWarn>$(NoWarn);1591</NoWarn>
 	<UserSecretsId>3cfbacc6-1599-457d-b528-e4e67c00f89b</UserSecretsId>
     <IsTransformWebConfigDisabled>false</IsTransformWebConfigDisabled>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +20,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.6" />
     <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="5.2.2" />
