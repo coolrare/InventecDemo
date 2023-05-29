@@ -14,14 +14,17 @@ namespace EFCoreDemo.Controllers
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
+        private readonly ILogger _customLogger;
         private readonly ILogger<WeatherForecastController> _logger;
         private readonly IOptions<JwtSettings> jwtSettings;
 
         public WeatherForecastController(
             ILogger<WeatherForecastController> logger,
+            ILoggerFactory loggerFactory,
             IOptions<JwtSettings> jwtSettings)
         {
             _logger = logger;
+            _customLogger = loggerFactory.CreateLogger("CustomLogger.v1");
             this.jwtSettings = jwtSettings;
         }
 
@@ -58,6 +61,8 @@ namespace EFCoreDemo.Controllers
             _logger.LogWarning("GetJwtSettings");
             _logger.LogError("GetJwtSettings");
             _logger.LogCritical("GetJwtSettings");
+
+            _customLogger.LogInformation("customLogger => GetJwtSettings");
 
             return Ok(jwtSettings.Value);
         }
