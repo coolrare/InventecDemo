@@ -70,5 +70,14 @@ namespace EFCoreDemo.Controllers
 
             return Ok(jwtSettings.Value);
         }
+
+        [HttpGet("~/rid")]
+        [AllowAnonymous]
+        public IActionResult GetRequestId()
+        {
+            _logger.LogInformation("GetRequestId");
+
+            return Ok(HttpContext.TraceIdentifier);
+        }
     }
 }
